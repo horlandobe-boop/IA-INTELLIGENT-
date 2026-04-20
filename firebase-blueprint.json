@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "MessengerConfig": {
+      "title": "Messenger Configuration",
+      "description": "User's Messenger bot settings",
+      "type": "object",
+      "properties": {
+        "accessToken": { "type": "string" },
+        "verificationToken": { "type": "string" },
+        "webhookUrl": { "type": "string" },
+        "aiPrompt": { "type": "string" },
+        "defaultResponse": { "type": "string" }
+      },
+      "required": ["accessToken", "verificationToken", "webhookUrl"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Product details with attachments",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "fileUrl": { "type": "string" },
+        "fileType": { "type": "string", "enum": ["image", "video", "pdf", "audio"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "description"]
+    },
+    "Broadcast": {
+      "title": "Broadcast Message",
+      "description": "Broadcast message sent to connected users",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["text", "image", "audio"] },
+        "content": { "type": "string" },
+        "mediaUrl": { "type": "string" },
+        "sentAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "type", "content"]
+    },
+    "MessengerUser": {
+      "title": "Messenger User",
+      "description": "Clients who contacted the bot",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The app owner ID" },
+        "psid": { "type": "string", "description": "Page Scoped ID of the client" },
+        "lastContact": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "psid"]
+    }
+  },
+  "firestore": {
+    "/configs/{userId}": {
+      "schema": "MessengerConfig",
+      "description": "User-specific bot configuration"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Products registered by users"
+    },
+    "/broadcasts/{broadcastId}": {
+      "schema": "Broadcast",
+      "description": "Broadcast history"
+    },
+    "/messenger_users/{docId}": {
+      "schema": "MessengerUser",
+      "description": "List of clients who interacted with the bots"
+    }
+  }
+}
